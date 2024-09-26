@@ -1,0 +1,54 @@
+definitions:
+  models.Todo:
+    properties:
+      body:
+        type: string
+      category:
+        type: string
+      deadline:
+        type: string
+      done:
+        type: boolean
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/todos:
+    get:
+      description: Fetches a list of all todos from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+      summary: Get all todos
+      tags:
+      - todos
+  /api/todos/{id}:
+    get:
+      description: Fetches a todo based on the id from the database
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+      summary: Get todo
+      tags:
+      - todos
+swagger: "2.0"
