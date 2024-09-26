@@ -10,9 +10,9 @@ Scaffolding for a go api project.
 
 # Setup:
 
-- Run the install-tools.sh scripts if you don't already have the tools. (Ensure your `PATH` is set up correctly).
+- Run the `install-tools.sh` scripts if you don't already have the tools. (Ensure your `PATH` is set up correctly).
 
-- Rename the `.example.env` file to `.env` and populate fields as needed.
+- Rename the `.example.env` file to `.env` and populate the fields as needed.
 
 - Run `docker compose up` to start the PostgreSQL Docker container or `docker compose up -d` to run it in the background as a daemon on every boot.
 
