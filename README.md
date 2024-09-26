@@ -10,13 +10,13 @@ Scaffolding for a go api project.
 
 # Setup:
 
-- Run the install-tools.sh scripts if you don't already have the tools. (make sure to have your PATH setup correctly)
+- Run the install-tools.sh scripts if you don't already have the tools. (Ensure your `PATH` is set up correctly).
 
-- Rename the `.example.env` file to `.env` and populate the fields as you see fit
+- Rename the `.example.env` file to `.env` and populate fields as needed.
 
-- Run `docker compose up` to start the postgres docker container or `docker compose up -d` to run it in the background as a daemon on every boot
+- Run `docker compose up` to start the PostgreSQL Docker container or `docker compose up -d` to run it in the background as a daemon on every boot.
 
-- Run `make migrate-up` to setup the database with the tables etc. specified in the `db/migration/` folder
+- Run `make migrate-up` to setup the database with the tables etc. specified in the `db/migration/` folder.
 
 # Usage:
 
