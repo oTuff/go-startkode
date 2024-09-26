@@ -2,23 +2,22 @@
 
 Scaffolding for a go api project.
 
-# Prerequisites
+# Prerequisites:
 
-- Golang installed
-- Make installed
-- [direnv](https://direnv.net/) installed and configured
-- a postgres database running
+- [Golang](https://go.dev/doc/install)
+- [Make](https://www.gnu.org/software/make/)
+- [docker](https://www.docker.com/) & [docker compose](https://docs.docker.com/compose/)
 
-# setup:
+# Setup:
 
-- run the install-tools.sh scripts if you don't already have the tools
-- create a .env file with the following fields:
+- Run the install-tools.sh scripts if you don't already have the tools. (make sure to have your PATH setup correctly)
 
-```
-DBSTRING="host=localhost port=5432 user=postgres password=test dbname=todo sslmode=disable"
-GOOSE_DRIVER=postgres
-GOOSE_DBSTRING="$DBSTRING"
-GOOSE_MIGRATION_DIR="db/migrations"
-```
+- Rename the `.example.env` file to `.env` and populate the fields as you see fit
 
-- run `direnv allow` to enable the activation of environment variables by direnv.
+- Run `docker compose up` to start the postgres docker container or `docker compose up -d` to run it in the background as a daemon on every boot
+
+- Run `make migrate-up` to setup the database with the tables etc. specified in the `db/migration/` folder
+
+# Usage:
+
+The Makefile defines different task to run. When in doubt you can just run `make` to find out which tasks are available or read the `Makefile` for more information
