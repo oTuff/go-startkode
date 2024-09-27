@@ -31,9 +31,9 @@ func GetAllTodos(w http.ResponseWriter, r *http.Request) {
 // @Description Fetches a todo based on the id from the database
 // @Tags todos
 // @Produce application/json
-// @Param id path string true "Todo ID"
+// @Param id path string true 3"Todo ID"
 // @Success 200 {object} models.Todo
-// @Router /api/todos/{id} [get]
+// @Router /api/todo/{id} [get]
 func GetTodo(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	todo, err := db.GetTodoById(id)
@@ -45,4 +45,24 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+}
+
+// DeleteTodo godoc
+// @Summary Delete todo
+// @Description Delete a todo based on the id from the database
+// @Tags todos
+// @Produce application/json
+// @Param id path string true "Todo ID"
+// @Success 200
+// @Router /api/todo/{id} [delete]
+func DeleteTodo(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	err := db.DeleteTodoById(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	// w.Write(res)
 }

@@ -17,22 +17,23 @@ definitions:
 info:
   contact: {}
 paths:
-  /api/todos:
-    get:
-      description: Fetches a list of all todos from the database
+  /api/todo/{id}:
+    delete:
+      description: Delete a todo based on the id from the database
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Todo'
-            type: array
-      summary: Get all todos
+      summary: Delete todo
       tags:
       - todos
-  /api/todos/{id}:
     get:
       description: Fetches a todo based on the id from the database
       parameters:
@@ -49,6 +50,21 @@ paths:
           schema:
             $ref: '#/definitions/models.Todo'
       summary: Get todo
+      tags:
+      - todos
+  /api/todos:
+    get:
+      description: Fetches a list of all todos from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+      summary: Get all todos
       tags:
       - todos
 swagger: "2.0"

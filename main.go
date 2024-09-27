@@ -23,6 +23,7 @@ func run() (*http.ServeMux, error) {
 	mux.HandleFunc("/api/docs/", httpSwagger.WrapHandler)
 	mux.HandleFunc("/api/todos", handlers.GetAllTodos)
 	mux.HandleFunc("/api/todo/{id}", handlers.GetTodo)
+	mux.HandleFunc("DELETE /api/todo/{id}", handlers.DeleteTodo)
 
 	return mux, nil
 }
