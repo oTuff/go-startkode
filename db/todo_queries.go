@@ -78,3 +78,11 @@ func DeleteTodoById(id string) error {
 	_, err := DB.Exec("DELETE FROM todo WHERE id=$1", id)
 	return err
 }
+
+func CreateTodo(todo *models.Todo) error {
+	var lastInsertId int
+	query := `INSERT INTO todo (title, text, iscompleted, category, deadline)
+			  VALUES ($1, $2, $3, $4, $5) RETURNING id`
+	err := DB.QueryRow(query, todo.Title, todo.Body, todo.Done, todo.Category, todo.Deadline).Scan(&lastInsertId)
+	return err
+}

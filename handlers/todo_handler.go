@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/oTuff/go-startkode/db"
+	"github.com/oTuff/go-startkode/models"
 )
 
 // GetAllTodos godoc
@@ -31,7 +32,7 @@ func GetAllTodos(w http.ResponseWriter, r *http.Request) {
 // @Description Fetches a todo based on the id from the database
 // @Tags todos
 // @Produce application/json
-// @Param id path string true 3"Todo ID"
+// @Param id path string true "Todo ID"
 // @Success 200 {object} models.Todo
 // @Router /api/todo/{id} [get]
 func GetTodo(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +54,9 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
 // @Tags todos
 // @Produce application/json
 // @Param id path string true "Todo ID"
-// @Success 200
+// @Success 200 {object} models.Todo
+// @Failure 400 {string} string "Bad request"
+// @Failure 404 {string} string "Not found"
 // @Router /api/todo/{id} [delete]
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
@@ -65,4 +68,34 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	// w.Write(res)
+}
+
+// CreateTodo godoc
+// @Summary Create a new todo
+// @Description Create a new todo entry in the database
+// @Tags todos
+// @Accept  application/json
+// @Produce application/json
+// @Param title query string true "Todo title"
+// @Param description query string true "Todo description"
+// @Param completed query bool false "Completion status"
+// @Success 201 {object} models.Todo
+// @Failure 400 {string} string "Bad request"
+// @Failure 500 {string} string "Internal server error"
+// @Router /api/todo [post]
+func CreateTodo(w http.ResponseWriter, r *http.Request) {
+	var todo models.Todo
+
+	err := json.NewDecoder(r.Body).Decode(&todo)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = db.CreateTodo(&todo)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
 }
