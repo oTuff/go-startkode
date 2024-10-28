@@ -1,7 +1,11 @@
+# read .env variables for use with commands
 include .env
 .EXPORT_ALL_VARIABLES:
+
+# Declare all targets as phony to avoid conflicts with file names
 .PHONY: default run build docs migrate migrate-new migrate-up migrate-down test test-verbose test-cover test-cover-html test-mutation clean
 
+# Default target to show available commands
 default:
 	@echo "Available targets:"
 	@echo "  run			# Run with air"
@@ -31,13 +35,13 @@ migrate:
 
 migrate-new:
 	@read -p "Enter migration name: " NAME; \
-	goose create $$NAME sql
+	goose create -dir db/migrations $$NAME sql
 
 migrate-up:
-	goose up
+	@goose -dir db/migrations postgres "$(DBSTRING)" up
 
 migrate-down:
-	goose down
+	@goose -dir db/migrations postgres "$(DBSTRING)" down
 
 test:
 	go test ./...
