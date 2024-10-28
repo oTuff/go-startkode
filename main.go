@@ -21,9 +21,9 @@ func run() (*http.ServeMux, error) {
 	mux := http.NewServeMux()
 
 	// Routes
-	mux.HandleFunc("/api/docs/", httpSwagger.WrapHandler)
-	mux.HandleFunc("/api/todos", handlers.GetAllTodos)
-	mux.HandleFunc("/api/todo/{id}", handlers.GetTodo)
+	mux.HandleFunc("GET /api/docs/", httpSwagger.WrapHandler)
+	mux.HandleFunc("GET /api/todos", handlers.GetAllTodos)
+	mux.HandleFunc("GET /api/todo/{id}", handlers.GetTodo)
 	mux.HandleFunc("DELETE /api/todo/{id}", handlers.DeleteTodo)
 	mux.HandleFunc("POST /api/todo", handlers.CreateTodo)
 
@@ -35,10 +35,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.DB.Close() // Ensure the database connection is closed at the end
+	// Ensure the database connection is closed at the end
+	defer db.DB.Close()
 
+	// CORS stuff
 	handler := cors.Default().Handler(mux)
 
-	fmt.Println("Running server on port 4000")
-	log.Fatal(http.ListenAndServe(":4000", handler))
+	fmt.Println("Running server on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }

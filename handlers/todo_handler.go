@@ -76,9 +76,7 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 // @Tags todos
 // @Accept  application/json
 // @Produce application/json
-// @Param title query string true "Todo title"
-// @Param description query string true "Todo description"
-// @Param completed query bool false "Completion status"
+// @Param todo body models.Todo true "Todo object"
 // @Success 201 {object} models.Todo
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal server error"

@@ -30,24 +30,13 @@ const docTemplate = `{
                 "summary": "Create a new todo",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Todo title",
-                        "name": "title",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Todo description",
-                        "name": "description",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "boolean",
-                        "description": "Completion status",
-                        "name": "completed",
-                        "in": "query"
+                        "description": "Todo object",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Todo"
+                        }
                     }
                 ],
                 "responses": {

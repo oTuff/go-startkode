@@ -23,20 +23,12 @@ paths:
       - application/json
       description: Create a new todo entry in the database
       parameters:
-      - description: Todo title
-        in: query
-        name: title
+      - description: Todo object
+        in: body
+        name: todo
         required: true
-        type: string
-      - description: Todo description
-        in: query
-        name: description
-        required: true
-        type: string
-      - description: Completion status
-        in: query
-        name: completed
-        type: boolean
+        schema:
+          $ref: '#/definitions/models.Todo'
       produces:
       - application/json
       responses:
