@@ -44,7 +44,7 @@ Then the swagger UI can be found on: `localhost:8080/api/docs/index.html`
 
 The Makefile defines different task to run. When in doubt you can just run `make` to find out which tasks are available or read the `Makefile` for more information
 
-```shell
+```
 $ make
 Available targets:
   run                   # Run with air
