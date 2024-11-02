@@ -11,7 +11,7 @@ COPY . ./
 
 
 # Build the Go application
-RUN go build -o /hello
+RUN go build -o /api
 # RUN CGO_ENABLED=0 GOOS=linux go build -o /hello
 
 # Optional:
@@ -28,4 +28,4 @@ EXPOSE 8080
 # COPY --from=builder /app/hello /hello
 
 # Run the hello binary
-CMD ["/hello"]
+CMD ["/api"]
