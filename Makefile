@@ -3,7 +3,7 @@ include .env
 .EXPORT_ALL_VARIABLES:
 
 # Declare all targets as phony to avoid conflicts with file names
-.PHONY: default run build docs migrate migrate-new migrate-up migrate-down test test-verbose test-cover test-cover-html test-mutation clean
+.PHONY: default run build docs migrate-new migrate-up migrate-down test test-verbose test-cover test-cover-html test-mutation
 
 # Default target to show available commands
 default:
@@ -11,7 +11,6 @@ default:
 	@echo "  run			# Run with air"
 	@echo "  build			# Build the project"
 	@echo "  docs 			# Generate docs with swag"
-	@echo "  migrate		# Show Goose help"
 	@echo "  migrate-new		# Create new sql migration"
 	@echo "  migrate-up		# Migrate the db"
 	@echo "  migrate-down		# Roll back the db"
@@ -30,14 +29,11 @@ build:
 docs:
 	swag init
 
-migrate:
-	goose -h
-
 migrate-new:
 	@read -p "Enter migration name: " NAME; \
 	goose create -dir db/migrations $$NAME sql
 
-migrate-up:
+migrate-up: # execute migrations
 	@goose -dir db/migrations postgres "$(DBSTRING)" up
 
 migrate-down:
