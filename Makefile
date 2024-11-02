@@ -1,4 +1,4 @@
-# read .env variables for use with commands
+# read .env variables for use with commands. Maybe not necessary
 include .env
 .EXPORT_ALL_VARIABLES:
 
@@ -20,11 +20,12 @@ default:
 	@echo "  test-cover-html	# Show test coverage in the browser"
 	@echo "  test-mutation		# Run mutation testing with gremlins"
 
+
 run:
-	air
+	DBSTRING=$(DBSTRING) air --build.cmd "go build -o bin/api" --build.bin "./bin/api"
 
 build:
-	go build
+	go build -o bin/api
 
 docs:
 	swag init
