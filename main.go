@@ -13,10 +13,10 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
 
-func run() (*http.ServeMux, error) {
+func run() (http.Handler, error) {
 	err := db.ConnectDB()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	mux := http.NewServeMux()
 
@@ -27,7 +27,10 @@ func run() (*http.ServeMux, error) {
 	mux.HandleFunc("DELETE /api/todo/{id}", handlers.DeleteTodo)
 	mux.HandleFunc("POST /api/todo", handlers.CreateTodo)
 
-	return mux, nil
+	//CORS stuff
+	handler := cors.Default().Handler(mux)
+
+	return handler, err
 }
 
 func main() {
@@ -38,9 +41,6 @@ func main() {
 	// Ensure the database connection is closed at the end
 	defer db.DB.Close()
 
-	// CORS stuff
-	handler := cors.Default().Handler(mux)
-
 	fmt.Println("Running server on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", handler))
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
