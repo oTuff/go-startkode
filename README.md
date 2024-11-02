@@ -13,7 +13,10 @@ Scaffolding for a go api project.
 ## Run:
 
 To simply run the application only docker and docker compose is needed. Firstly rename the `.example.env` file to `.env` then run:
-`docker-compose --profile app up --build`
+
+```shell
+docker-compose --profile app up --build
+```
 
 Then the swagger UI can be found on: `localhost:8080/api/docs/index.html`
 
@@ -27,7 +30,11 @@ Then the swagger UI can be found on: `localhost:8080/api/docs/index.html`
 
 - Run the `install-tools.sh` scripts if you don't already have the tools. (Ensure your `PATH` is set up correctly).
 
-- Rename the `.example.env` file to `.env` and populate the fields as needed.
+```shell
+./install-tools.sh
+```
+
+- Rename or copy the `.example.env` file to `.env` and populate the fields as needed.
 
 - Run `docker compose up` to start the PostgreSQL Docker container or `docker compose up -d` to run it in the background.
 
@@ -37,7 +44,7 @@ Then the swagger UI can be found on: `localhost:8080/api/docs/index.html`
 
 The Makefile defines different task to run. When in doubt you can just run `make` to find out which tasks are available or read the `Makefile` for more information
 
-```
+```shell
 $ make
 Available targets:
   run                   # Run with air
