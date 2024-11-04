@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Todo"
+                            "$ref": "#/definitions/generated.CreateTodoParams"
                         }
                     }
                 ],
@@ -43,7 +43,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Todo"
+                            "$ref": "#/definitions/generated.CreateTodoParams"
                         }
                     },
                     "400": {
@@ -84,7 +84,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Todo"
+                            "$ref": "#/definitions/generated.Todo"
                         }
                     }
                 }
@@ -111,7 +111,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Todo"
+                            "$ref": "#/definitions/generated.Todo"
                         }
                     },
                     "400": {
@@ -145,7 +145,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Todo"
+                                "$ref": "#/definitions/generated.Todo"
                             }
                         }
                     }
@@ -154,26 +154,70 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Todo": {
+        "generated.CreateTodoParams": {
             "type": "object",
             "properties": {
-                "body": {
-                    "type": "string"
-                },
                 "category": {
-                    "type": "string"
+                    "$ref": "#/definitions/sql.NullString"
                 },
                 "deadline": {
+                    "$ref": "#/definitions/sql.NullTime"
+                },
+                "iscompleted": {
+                    "type": "boolean"
+                },
+                "text": {
                     "type": "string"
                 },
-                "done": {
-                    "type": "boolean"
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "generated.Todo": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/sql.NullString"
+                },
+                "deadline": {
+                    "$ref": "#/definitions/sql.NullTime"
                 },
                 "id": {
                     "type": "integer"
                 },
+                "iscompleted": {
+                    "type": "boolean"
+                },
+                "text": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "sql.NullString": {
+            "type": "object",
+            "properties": {
+                "string": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if String is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "sql.NullTime": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
                 }
             }
         }

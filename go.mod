@@ -3,6 +3,7 @@ module github.com/oTuff/go-startkode
 go 1.23.1
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/lib/pq v1.10.9
 	github.com/rs/cors v1.11.1
 	github.com/swaggo/http-swagger/v2 v2.0.2

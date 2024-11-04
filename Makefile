@@ -3,7 +3,7 @@ include .env
 .EXPORT_ALL_VARIABLES:
 
 # Declare all targets as phony to avoid conflicts with file names
-.PHONY: default run build docs migrate-new migrate-up migrate-down test test-verbose test-cover test-cover-html test-mutation
+.PHONY: default run build docs sqlc migrate-new migrate-up migrate-down test test-verbose test-cover test-cover-html test-mutation
 
 # Default target to show available commands
 default:
@@ -11,6 +11,7 @@ default:
 	@echo "  run			# Run with air"
 	@echo "  build			# Build the project"
 	@echo "  docs 			# Generate docs with swag"
+	@echo "  sqlc			# Generate sqlc boilerplate"
 	@echo "  migrate-new		# Create new sql migration"
 	@echo "  migrate-up		# Migrate the db"
 	@echo "  migrate-down		# Roll back the db"
@@ -28,7 +29,10 @@ build:
 	go build -o bin/api
 
 docs:
-	swag init
+	swag init --parseInternal --parseDependency github.com/volatiletech/null/v8
+	# swag init --parseDependency
+sqlc:
+	sqlc generate
 
 migrate-new:
 	@read -p "Enter migration name: " NAME; \

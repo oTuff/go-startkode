@@ -1,18 +1,47 @@
 definitions:
-  models.Todo:
+  generated.CreateTodoParams:
     properties:
-      body:
-        type: string
       category:
-        type: string
+        $ref: '#/definitions/sql.NullString'
       deadline:
-        type: string
-      done:
+        $ref: '#/definitions/sql.NullTime'
+      iscompleted:
         type: boolean
-      id:
-        type: integer
+      text:
+        type: string
       title:
         type: string
+    type: object
+  generated.Todo:
+    properties:
+      category:
+        $ref: '#/definitions/sql.NullString'
+      deadline:
+        $ref: '#/definitions/sql.NullTime'
+      id:
+        type: integer
+      iscompleted:
+        type: boolean
+      text:
+        type: string
+      title:
+        type: string
+    type: object
+  sql.NullString:
+    properties:
+      string:
+        type: string
+      valid:
+        description: Valid is true if String is not NULL
+        type: boolean
+    type: object
+  sql.NullTime:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
     type: object
 info:
   contact: {}
@@ -28,14 +57,14 @@ paths:
         name: todo
         required: true
         schema:
-          $ref: '#/definitions/models.Todo'
+          $ref: '#/definitions/generated.CreateTodoParams'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Todo'
+            $ref: '#/definitions/generated.CreateTodoParams'
         "400":
           description: Bad request
           schema:
@@ -62,7 +91,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Todo'
+            $ref: '#/definitions/generated.Todo'
         "400":
           description: Bad request
           schema:
@@ -88,7 +117,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Todo'
+            $ref: '#/definitions/generated.Todo'
       summary: Get todo
       tags:
       - todos
@@ -102,7 +131,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Todo'
+              $ref: '#/definitions/generated.Todo'
             type: array
       summary: Get all todos
       tags:

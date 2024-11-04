@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
-	"github.com/oTuff/go-startkode/db"
-	"github.com/oTuff/go-startkode/models"
+	"github.com/oTuff/go-startkode/db/generated"
 )
 
 // GetAllTodos godoc
@@ -14,17 +14,27 @@ import (
 // @Description Fetches a list of all todos from the database
 // @Tags todos
 // @Produce application/json
-// @Success 200 {array} models.Todo
+// @Success 200 {array} generated.Todo
 // @Router /api/todos [get]
-func GetAllTodos(w http.ResponseWriter, r *http.Request) {
-	todos, err := db.FetchAllTodos()
-	if err != nil {
-		log.Fatal(err)
+func GetAllTodos(queries *generated.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Use request context
+		ctx := r.Context()
+
+		// Call the FetchAllTodos method with context
+		todos, err := queries.FetchAllTodos(ctx)
+		if err != nil {
+			http.Error(w, "Failed to fetch todos", http.StatusInternalServerError)
+			log.Println(err)
+			return
+		}
+
+		// Marshal and write response
+		res, _ := json.Marshal(todos)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
 	}
-	res, _ := json.Marshal(todos)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
 }
 
 // GetTodo godoc
@@ -33,19 +43,26 @@ func GetAllTodos(w http.ResponseWriter, r *http.Request) {
 // @Tags todos
 // @Produce application/json
 // @Param id path string true "Todo ID"
-// @Success 200 {object} models.Todo
+// @Success 200 {object} generated.Todo
 // @Router /api/todo/{id} [get]
-func GetTodo(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
-	todo, err := db.GetTodoById(id)
-	if err != nil {
-		log.Fatal(err)
-	}
+func GetTodo(queries *generated.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 
-	res, _ := json.Marshal(todo)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
+		ctx := r.Context()
+
+		idStr := r.PathValue("id")
+		id, err := strconv.ParseInt(idStr, 10, 64)
+
+		todo, err := queries.GetTodoById(ctx, id)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		res, _ := json.Marshal(todo)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+	}
 }
 
 // DeleteTodo godoc
@@ -54,20 +71,25 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
 // @Tags todos
 // @Produce application/json
 // @Param id path string true "Todo ID"
-// @Success 200 {object} models.Todo
+// @Success 200 {object} generated.Todo
 // @Failure 400 {string} string "Bad request"
 // @Failure 404 {string} string "Not found"
 // @Router /api/todo/{id} [delete]
-func DeleteTodo(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
-	err := db.DeleteTodoById(id)
-	if err != nil {
-		log.Fatal(err)
-	}
+func DeleteTodo(queries *generated.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		idStr := r.PathValue("id")
+		id, err := strconv.ParseInt(idStr, 10, 64)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	// w.Write(res)
+		err = queries.DeleteTodoById(ctx, id)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		// w.Write(res)
+	}
 }
 
 // CreateTodo godoc
@@ -76,24 +98,27 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 // @Tags todos
 // @Accept  application/json
 // @Produce application/json
-// @Param todo body models.Todo true "Todo object"
-// @Success 201 {object} models.Todo
+// @Param todo body generated.CreateTodoParams true "Todo object"
+// @Success 201 {object} generated.CreateTodoParams
 // @Failure 400 {string} string "Bad request"
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/todo [post]
-func CreateTodo(w http.ResponseWriter, r *http.Request) {
-	var todo models.Todo
+func CreateTodo(queries *generated.Queries) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		var todo generated.CreateTodoParams
 
-	err := json.NewDecoder(r.Body).Decode(&todo)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	err = db.CreateTodo(&todo)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+		err := json.NewDecoder(r.Body).Decode(&todo)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		_, err = queries.CreateTodo(ctx, todo)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
 
-	w.WriteHeader(http.StatusCreated)
+		w.WriteHeader(http.StatusCreated)
+	}
 }

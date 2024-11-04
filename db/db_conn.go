@@ -8,23 +8,21 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var DB *sql.DB
-
-func ConnectDB() error {
+func ConnectDB() (*sql.DB, error) {
 
 	connStr := os.Getenv("DBSTRING")
 
 	var err error
-	DB, err = sql.Open("postgres", connStr)
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = DB.Ping()
+	err = db.Ping()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	fmt.Println("Successfully connected to the database!")
 
-	return nil
+	return db, nil
 }
