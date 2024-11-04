@@ -14,10 +14,6 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
 
-type App struct {
-	queries *generated.Queries
-}
-
 func run() (http.Handler, error) {
 	db, err := db.ConnectDB()
 	if err != nil {
