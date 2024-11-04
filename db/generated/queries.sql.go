@@ -7,7 +7,7 @@ package generated
 
 import (
 	"context"
-	"database/sql"
+	"time"
 )
 
 const createTodo = `-- name: CreateTodo :one
@@ -18,15 +18,15 @@ RETURNING
 `
 
 type CreateTodoParams struct {
-	Title       string         `json:"title"`
-	Text        string         `json:"text"`
-	Iscompleted bool           `json:"iscompleted"`
-	Category    sql.NullString `json:"category"`
-	Deadline    sql.NullTime   `json:"deadline"`
+	Title       string     `json:"title"`
+	Text        string     `json:"text"`
+	Iscompleted bool       `json:"iscompleted"`
+	Category    *string    `json:"category"`
+	Deadline    *time.Time `json:"deadline"`
 }
 
 func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (int64, error) {
-	row := q.db.QueryRowContext(ctx, createTodo,
+	row := q.db.QueryRow(ctx, createTodo,
 		arg.Title,
 		arg.Text,
 		arg.Iscompleted,
@@ -44,7 +44,7 @@ WHERE id = $1
 `
 
 func (q *Queries) DeleteTodoById(ctx context.Context, id int64) error {
-	_, err := q.db.ExecContext(ctx, deleteTodoById, id)
+	_, err := q.db.Exec(ctx, deleteTodoById, id)
 	return err
 }
 
@@ -61,7 +61,7 @@ FROM
 `
 
 func (q *Queries) FetchAllTodos(ctx context.Context) ([]Todo, error) {
-	rows, err := q.db.QueryContext(ctx, fetchAllTodos)
+	rows, err := q.db.Query(ctx, fetchAllTodos)
 	if err != nil {
 		return nil, err
 	}
@@ -80,9 +80,6 @@ func (q *Queries) FetchAllTodos(ctx context.Context) ([]Todo, error) {
 			return nil, err
 		}
 		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -105,7 +102,7 @@ WHERE
 `
 
 func (q *Queries) GetTodoById(ctx context.Context, id int64) (Todo, error) {
-	row := q.db.QueryRowContext(ctx, getTodoById, id)
+	row := q.db.QueryRow(ctx, getTodoById, id)
 	var i Todo
 	err := row.Scan(
 		&i.ID,

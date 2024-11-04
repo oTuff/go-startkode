@@ -5,14 +5,14 @@
 package generated
 
 import (
-	"database/sql"
+	"time"
 )
 
 type Todo struct {
-	ID          int64          `json:"id"`
-	Title       string         `json:"title"`
-	Text        string         `json:"text"`
-	Iscompleted bool           `json:"iscompleted"`
-	Category    sql.NullString `json:"category"`
-	Deadline    sql.NullTime   `json:"deadline"`
+	ID          int64      `json:"id"`
+	Title       string     `json:"title"`
+	Text        string     `json:"text"`
+	Iscompleted bool       `json:"iscompleted"`
+	Category    *string    `json:"category"`
+	Deadline    *time.Time `json:"deadline"`
 }

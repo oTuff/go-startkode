@@ -158,10 +158,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category": {
-                    "$ref": "#/definitions/sql.NullString"
+                    "type": "string"
                 },
                 "deadline": {
-                    "$ref": "#/definitions/sql.NullTime"
+                    "type": "string"
                 },
                 "iscompleted": {
                     "type": "boolean"
@@ -178,10 +178,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category": {
-                    "$ref": "#/definitions/sql.NullString"
+                    "type": "string"
                 },
                 "deadline": {
-                    "$ref": "#/definitions/sql.NullTime"
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
@@ -194,30 +194,6 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
-                }
-            }
-        },
-        "sql.NullString": {
-            "type": "object",
-            "properties": {
-                "string": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if String is not NULL",
-                    "type": "boolean"
-                }
-            }
-        },
-        "sql.NullTime": {
-            "type": "object",
-            "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
                 }
             }
         }

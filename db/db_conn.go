@@ -1,24 +1,25 @@
 package db
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
 	"os"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v5"
 )
 
-func ConnectDB() (*sql.DB, error) {
+func ConnectDB() (*pgx.Conn, error) {
 
 	connStr := os.Getenv("DBSTRING")
+	ctx := context.Background()
 
-	var err error
-	db, err := sql.Open("postgres", connStr)
+	db, err := pgx.Connect(ctx, connStr)
+
 	if err != nil {
 		return nil, err
 	}
 
-	err = db.Ping()
+	err = db.Ping(ctx)
 	if err != nil {
 		return nil, err
 	}

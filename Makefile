@@ -29,8 +29,7 @@ build:
 	go build -o bin/api
 
 docs:
-	swag init --parseInternal --parseDependency github.com/volatiletech/null/v8
-	# swag init --parseDependency
+	swag init
 sqlc:
 	sqlc generate
 

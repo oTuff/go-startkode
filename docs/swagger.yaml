@@ -2,9 +2,9 @@ definitions:
   generated.CreateTodoParams:
     properties:
       category:
-        $ref: '#/definitions/sql.NullString'
+        type: string
       deadline:
-        $ref: '#/definitions/sql.NullTime'
+        type: string
       iscompleted:
         type: boolean
       text:
@@ -15,9 +15,9 @@ definitions:
   generated.Todo:
     properties:
       category:
-        $ref: '#/definitions/sql.NullString'
+        type: string
       deadline:
-        $ref: '#/definitions/sql.NullTime'
+        type: string
       id:
         type: integer
       iscompleted:
@@ -26,22 +26,6 @@ definitions:
         type: string
       title:
         type: string
-    type: object
-  sql.NullString:
-    properties:
-      string:
-        type: string
-      valid:
-        description: Valid is true if String is not NULL
-        type: boolean
-    type: object
-  sql.NullTime:
-    properties:
-      time:
-        type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
     type: object
 info:
   contact: {}
