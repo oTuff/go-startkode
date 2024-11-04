@@ -25,7 +25,7 @@ type CreateTodoParams struct {
 	Deadline    sql.NullTime   `json:"deadline"`
 }
 
-func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (int32, error) {
+func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (int64, error) {
 	row := q.db.QueryRowContext(ctx, createTodo,
 		arg.Title,
 		arg.Text,
@@ -33,7 +33,7 @@ func (q *Queries) CreateTodo(ctx context.Context, arg CreateTodoParams) (int32, 
 		arg.Category,
 		arg.Deadline,
 	)
-	var id int32
+	var id int64
 	err := row.Scan(&id)
 	return id, err
 }
@@ -43,12 +43,12 @@ DELETE FROM todo
 WHERE id = $1
 `
 
-func (q *Queries) DeleteTodoById(ctx context.Context, id int32) error {
+func (q *Queries) DeleteTodoById(ctx context.Context, id int64) error {
 	_, err := q.db.ExecContext(ctx, deleteTodoById, id)
 	return err
 }
 
-const fetchAllUsers = `-- name: FetchAllUsers :many
+const fetchAllTodos = `-- name: FetchAllTodos :many
 SELECT
     id,
     title,
@@ -60,8 +60,8 @@ FROM
     todo
 `
 
-func (q *Queries) FetchAllUsers(ctx context.Context) ([]Todo, error) {
-	rows, err := q.db.QueryContext(ctx, fetchAllUsers)
+func (q *Queries) FetchAllTodos(ctx context.Context) ([]Todo, error) {
+	rows, err := q.db.QueryContext(ctx, fetchAllTodos)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ WHERE
     id = $1
 `
 
-func (q *Queries) GetTodoById(ctx context.Context, id int32) (Todo, error) {
+func (q *Queries) GetTodoById(ctx context.Context, id int64) (Todo, error) {
 	row := q.db.QueryRowContext(ctx, getTodoById, id)
 	var i Todo
 	err := row.Scan(
