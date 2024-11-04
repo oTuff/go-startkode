@@ -52,6 +52,9 @@ func GetTodo(queries *generated.Queries) http.HandlerFunc {
 
 		idStr := r.PathValue("id")
 		id, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		todo, err := queries.GetTodoById(ctx, id)
 		if err != nil {
@@ -80,6 +83,9 @@ func DeleteTodo(queries *generated.Queries) http.HandlerFunc {
 		ctx := r.Context()
 		idStr := r.PathValue("id")
 		id, err := strconv.ParseInt(idStr, 10, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		err = queries.DeleteTodoById(ctx, id)
 		if err != nil {
