@@ -7,8 +7,8 @@ include .env
 
 # Show available targets
 default:
-	@echo -e "\e[1;32mAvailable targets:\e[0m"
-	@grep "^[^ ]*:#" Makefile | awk -F':' '{printf "%-20s %s\n", $$1, $$2}'
+	@echo -e "\033[1;32mAvailable targets:\033[0m"
+	@grep "^[^ ]*:#" Makefile | awk -F':' '{printf "%-20s \033[1;34m%s\033[0m\n", $$1, $$2}'
 
 install-tools:# Install dev tools
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
