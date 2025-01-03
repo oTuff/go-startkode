@@ -28,11 +28,7 @@ Then the swagger UI can be found on: `localhost:8080/api/docs/index.html`
 
 ## Setup:
 
-- Run the `install-tools.sh` scripts if you don't already have the tools. (Ensure your `PATH` is set up correctly).
-
-```shell
-./install-tools.sh
-```
+- Run the `make install-tools` to install necessary development tools. (Ensure your `PATH` is set up correctly).
 
 - Rename or copy the `.example.env` file to `.env` and populate the fields as needed.
 
@@ -44,17 +40,21 @@ Then the swagger UI can be found on: `localhost:8080/api/docs/index.html`
 
 The Makefile defines different task to run. When in doubt you can just run `make` to find out which tasks are available or read the `Makefile` for more information
 
-```
+````
 $ make
 Available targets:
-  run                   # Run with air
-  build                 # Build the project
-  docs                  # Generate docs with swag
-  migrate-new           # Create new sql migration
-  migrate-up            # Migrate the db
-  migrate-down          # Roll back the db
-  test                  # Run tests
-  test-verbose          # Run test with verbose flag
-  test-cover            # Show test coverage
-  test-cover-html       # Show test coverage in the browser
+install-tools        # Install dev tools
+run                  # Run with live reload
+build                # Build application
+docs                 # Generate swagger documentation
+sqlc                 # Generate slqc boilerplate
+migrate-new          # Create new sql migration
+migrate-up           # Migrate the db
+migrate-down         # Roll back the db
+test                 # Run tests
+test-verbose         # Run tests with verbose flag
+test-cover           # Show test coverage
+test-cover-html      # Show test coverage in the browser
+test-mutation        # Run mutation testing with gremlins
 ```
+````
